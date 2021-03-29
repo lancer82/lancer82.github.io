@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Lancer Penn">
+
+
+
+
+
+<title>1-14 常用API与异常 | Lancer&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Lancer&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Lancer&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">1-14 常用API与异常</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Lancer Penn</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">三月 29, 2021&nbsp;&nbsp;20:31:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/JavaSE/">JavaSE</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="1-时间日期类"><a href="#1-时间日期类" class="headerlink" title="1.时间日期类"></a>1.时间日期类</h2><h3 id="1-1-Date类（应用）"><a href="#1-1-Date类（应用）" class="headerlink" title="1.1 Date类（应用）"></a>1.1 Date类（应用）</h3><ul>
+<li><p>计算机中时间原点</p>
+<p>1970年1月1日 00:00:00</p>
+</li>
+<li><p>时间换算单位</p>
+<p>1秒 = 1000毫秒</p>
+</li>
+<li><p>Date类概述</p>
+<p>Date 代表了一个特定的时间，精确到毫秒</p>
+</li>
+<li><p>Date类构造方法</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public Date()</td>
+<td>分配一个 Date对象，并初始化，以便它代表它被分配的时间，精确到毫秒</td>
+</tr>
+<tr>
+<td>public Date(long date)</td>
+<td>分配一个 Date对象，并将其初始化为表示从标准基准时间起指定的毫秒数</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateDemo01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//public Date()：分配一个 Date对象，并初始化，以便它代表它被分配的时间，精确到毫秒</span></span><br><span class="line">        Date d1 = <span class="keyword">new</span> Date();</span><br><span class="line">        System.out.println(d1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//public Date(long date)：分配一个 Date对象，并将其初始化为表示从标准基准时间起指定的毫秒数</span></span><br><span class="line">        <span class="keyword">long</span> date = <span class="number">1000</span>*<span class="number">60</span>*<span class="number">60</span>;</span><br><span class="line">        Date d2 = <span class="keyword">new</span> Date(date);</span><br><span class="line">        System.out.println(d2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-2-Date类常用方法（应用）"><a href="#1-2-Date类常用方法（应用）" class="headerlink" title="1.2 Date类常用方法（应用）"></a>1.2 Date类常用方法（应用）</h3><ul>
+<li><p>常用方法</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public long getTime()</td>
+<td>获取的是日期对象从1970年1月1日 00:00:00到现在的毫秒值</td>
+</tr>
+<tr>
+<td>public void setTime(long time)</td>
+<td>设置时间，给的是毫秒值</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateDemo02</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建日期对象</span></span><br><span class="line">        Date d = <span class="keyword">new</span> Date();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//public long getTime():获取的是日期对象从1970年1月1日 00:00:00到现在的毫秒值</span></span><br><span class="line"><span class="comment">//        System.out.println(d.getTime());</span></span><br><span class="line"><span class="comment">//        System.out.println(d.getTime() * 1.0 / 1000 / 60 / 60 / 24 / 365 + &quot;年&quot;);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//public void setTime(long time):设置时间，给的是毫秒值</span></span><br><span class="line"><span class="comment">//        long time = 1000*60*60;</span></span><br><span class="line">        <span class="keyword">long</span> time = System.currentTimeMillis();</span><br><span class="line">        d.setTime(time);</span><br><span class="line"></span><br><span class="line">        System.out.println(d);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-3-SimpleDateFormat类（应用）"><a href="#1-3-SimpleDateFormat类（应用）" class="headerlink" title="1.3 SimpleDateFormat类（应用）"></a>1.3 SimpleDateFormat类（应用）</h3><ul>
+<li><p>SimpleDateFormat类概述</p>
+<p>​    SimpleDateFormat是一个具体的类，用于以区域设置敏感的方式格式化和解析日期。</p>
+<p>​    我们重点学习日期格式化和解析</p>
+</li>
+<li><p>SimpleDateFormat类构造方法</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public   SimpleDateFormat()</td>
+<td>构造一个SimpleDateFormat，使用默认模式和日期格式</td>
+</tr>
+<tr>
+<td>public SimpleDateFormat(String pattern)</td>
+<td>构造一个SimpleDateFormat使用给定的模式和默认的日期格式</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>SimpleDateFormat类的常用方法</p>
+<ul>
+<li>格式化(从Date到String)<ul>
+<li>public final String format(Date date)：将日期格式化成日期/时间字符串</li>
+</ul>
+</li>
+<li>解析(从String到Date)<ul>
+<li>public Date parse(String source)：从给定字符串的开始解析文本以生成日期</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleDateFormatDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ParseException </span>&#123;</span><br><span class="line">        <span class="comment">//格式化：从 Date 到 String</span></span><br><span class="line">        Date d = <span class="keyword">new</span> Date();</span><br><span class="line"><span class="comment">//        SimpleDateFormat sdf = new SimpleDateFormat();</span></span><br><span class="line">        SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy年MM月dd日 HH:mm:ss&quot;</span>);</span><br><span class="line">        String s = sdf.format(d);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">        System.out.println(<span class="string">&quot;--------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//从 String 到 Date</span></span><br><span class="line">        String ss = <span class="string">&quot;2048-08-09 11:11:11&quot;</span>;</span><br><span class="line">        <span class="comment">//ParseException</span></span><br><span class="line">        SimpleDateFormat sdf2 = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="line">        Date dd = sdf2.parse(ss);</span><br><span class="line">        System.out.println(dd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-4-时间日期类练习-应用"><a href="#1-4-时间日期类练习-应用" class="headerlink" title="1.4 时间日期类练习 (应用)"></a>1.4 时间日期类练习 (应用)</h3><ul>
+<li><p>需求</p>
+<p>秒杀开始时间是2020年11月11日 00:00:00,结束时间是2020年11月11日 00:10:00,用户小贾下单时间是2020年11月11日 00:03:47,用户小皮下单时间是2020年11月11日 00:10:11,判断用户有没有成功参与秒杀活动</p>
+</li>
+<li><p>实现步骤</p>
+<ol>
+<li>判断下单时间是否在开始到结束的范围内</li>
+<li>把字符串形式的时间变成毫秒值</li>
+</ol>
+</li>
+<li><p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateDemo5</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ParseException </span>&#123;</span><br><span class="line">        <span class="comment">//开始时间：2020年11月11日 0:0:0</span></span><br><span class="line">        <span class="comment">//结束时间：2020年11月11日 0:10:0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//小贾2020年11月11日 0:03:47</span></span><br><span class="line">        <span class="comment">//小皮2020年11月11日 0:10:11</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//1.判断两位同学的下单时间是否在范围之内就可以了。</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.要把每一个时间都换算成毫秒值。</span></span><br><span class="line"></span><br><span class="line">        String start = <span class="string">&quot;2020年11月11日 0:0:0&quot;</span>;</span><br><span class="line">        String end = <span class="string">&quot;2020年11月11日 0:10:0&quot;</span>;</span><br><span class="line"></span><br><span class="line">        String jia = <span class="string">&quot;2020年11月11日 0:03:47&quot;</span>;</span><br><span class="line">        String pi = <span class="string">&quot;2020年11月11日 0:10:11&quot;</span>;</span><br><span class="line"></span><br><span class="line">        SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy年MM月dd日 HH:mm:ss&quot;</span>);</span><br><span class="line">        <span class="keyword">long</span> startTime = sdf.parse(start).getTime();</span><br><span class="line">        <span class="keyword">long</span> endTime = sdf.parse(end).getTime();</span><br><span class="line"></span><br><span class="line"><span class="comment">//        System.out.println(startTime);</span></span><br><span class="line"><span class="comment">//        System.out.println(endTime);</span></span><br><span class="line">        <span class="keyword">long</span> jiaTime = sdf.parse(jia).getTime();</span><br><span class="line">        <span class="keyword">long</span> piTime = sdf.parse(pi).getTime();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(jiaTime &gt;= startTime &amp;&amp; jiaTime &lt;= endTime)&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;小贾同学参加上了秒杀活动&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;小贾同学没有参加上秒杀活动&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(piTime &gt;= startTime &amp;&amp; piTime &lt;= endTime)&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;小皮同学参加上了秒杀活动&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;小皮同学没有参加上秒杀活动&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="2-JDK8时间日期类"><a href="#2-JDK8时间日期类" class="headerlink" title="2.JDK8时间日期类"></a>2.JDK8时间日期类</h2><h3 id="2-1-JDK8新增日期类-理解"><a href="#2-1-JDK8新增日期类-理解" class="headerlink" title="2.1 JDK8新增日期类 (理解)"></a>2.1 JDK8新增日期类 (理解)</h3><ul>
+<li>LocalDate       表示日期（年月日）  </li>
+<li>LocalTime       表示时间（时分秒）</li>
+<li>LocalDateTime    表示时间+ 日期 （年月日时分秒）</li>
+</ul>
+<h3 id="2-2-LocalDateTime创建方法-应用"><a href="#2-2-LocalDateTime创建方法-应用" class="headerlink" title="2.2 LocalDateTime创建方法 (应用)"></a>2.2 LocalDateTime创建方法 (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public static LocalDateTime now()</td>
+<td>获取当前系统时间</td>
+</tr>
+<tr>
+<td>public static LocalDateTime of  (年, 月 , 日, 时, 分, 秒)</td>
+<td>使用指定年月日和时分秒初始化一个LocalDateTime对象</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LocalDateTime now = LocalDateTime.now();</span><br><span class="line">        System.out.println(now);</span><br><span class="line"></span><br><span class="line">        LocalDateTime localDateTime = LocalDateTime.of(<span class="number">2020</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">11</span>);</span><br><span class="line">        System.out.println(localDateTime);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-3-LocalDateTime获取方法-应用"><a href="#2-3-LocalDateTime获取方法-应用" class="headerlink" title="2.3 LocalDateTime获取方法 (应用)"></a>2.3 LocalDateTime获取方法 (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public int getYear()</td>
+<td>获取年</td>
+</tr>
+<tr>
+<td>public int getMonthValue()</td>
+<td>获取月份（1-12）</td>
+</tr>
+<tr>
+<td>public int getDayOfMonth()</td>
+<td>获取月份中的第几天（1-31）</td>
+</tr>
+<tr>
+<td>public int getDayOfYear()</td>
+<td>获取一年中的第几天（1-366）</td>
+</tr>
+<tr>
+<td>public DayOfWeek getDayOfWeek()</td>
+<td>获取星期</td>
+</tr>
+<tr>
+<td>public int getMinute()</td>
+<td>获取分钟</td>
+</tr>
+<tr>
+<td>public int getHour()</td>
+<td>获取小时</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LocalDateTime localDateTime = LocalDateTime.of(<span class="number">2020</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">20</span>);</span><br><span class="line">        <span class="comment">//public int getYear()           获取年</span></span><br><span class="line">        <span class="keyword">int</span> year = localDateTime.getYear();</span><br><span class="line">        System.out.println(<span class="string">&quot;年为&quot;</span> +year);</span><br><span class="line">        <span class="comment">//public int getMonthValue()     获取月份（1-12）</span></span><br><span class="line">        <span class="keyword">int</span> month = localDateTime.getMonthValue();</span><br><span class="line">        System.out.println(<span class="string">&quot;月份为&quot;</span> + month);</span><br><span class="line"></span><br><span class="line">        Month month1 = localDateTime.getMonth();</span><br><span class="line"><span class="comment">//        System.out.println(month1);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//public int getDayOfMonth()     获取月份中的第几天（1-31）</span></span><br><span class="line">        <span class="keyword">int</span> day = localDateTime.getDayOfMonth();</span><br><span class="line">        System.out.println(<span class="string">&quot;日期为&quot;</span> + day);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//public int getDayOfYear()      获取一年中的第几天（1-366）</span></span><br><span class="line">        <span class="keyword">int</span> dayOfYear = localDateTime.getDayOfYear();</span><br><span class="line">        System.out.println(<span class="string">&quot;这是一年中的第&quot;</span> + dayOfYear + <span class="string">&quot;天&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//public DayOfWeek getDayOfWeek()获取星期</span></span><br><span class="line">        DayOfWeek dayOfWeek = localDateTime.getDayOfWeek();</span><br><span class="line">        System.out.println(<span class="string">&quot;星期为&quot;</span> + dayOfWeek);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//public int getMinute()        获取分钟</span></span><br><span class="line">        <span class="keyword">int</span> minute = localDateTime.getMinute();</span><br><span class="line">        System.out.println(<span class="string">&quot;分钟为&quot;</span> + minute);</span><br><span class="line">        <span class="comment">//public int getHour()           获取小时</span></span><br><span class="line">  </span><br><span class="line">        <span class="keyword">int</span> hour = localDateTime.getHour();</span><br><span class="line">        System.out.println(<span class="string">&quot;小时为&quot;</span> + hour);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-4-LocalDateTime转换方法-应用"><a href="#2-4-LocalDateTime转换方法-应用" class="headerlink" title="2.4 LocalDateTime转换方法 (应用)"></a>2.4 LocalDateTime转换方法 (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public LocalDate  toLocalDate ()</td>
+<td>转换成为一个LocalDate对象</td>
+</tr>
+<tr>
+<td>public LocalTime toLocalTime ()</td>
+<td>转换成为一个LocalTime对象</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo4</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LocalDateTime localDateTime = LocalDateTime.of(<span class="number">2020</span>, <span class="number">12</span>, <span class="number">12</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>);</span><br><span class="line">        <span class="comment">//public LocalDate toLocalDate ()    转换成为一个LocalDate对象</span></span><br><span class="line">        LocalDate localDate = localDateTime.toLocalDate();</span><br><span class="line">        System.out.println(localDate);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//public LocalTime toLocalTime ()    转换成为一个LocalTime对象</span></span><br><span class="line">        LocalTime localTime = localDateTime.toLocalTime();</span><br><span class="line">        System.out.println(localTime);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-5-LocalDateTime格式化和解析-应用"><a href="#2-5-LocalDateTime格式化和解析-应用" class="headerlink" title="2.5 LocalDateTime格式化和解析 (应用)"></a>2.5 LocalDateTime格式化和解析 (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public String format (指定格式)</td>
+<td>把一个LocalDateTime格式化成为一个字符串</td>
+</tr>
+<tr>
+<td>public LocalDateTime parse (准备解析的字符串, 解析格式)</td>
+<td>把一个日期字符串解析成为一个LocalDateTime对象</td>
+</tr>
+<tr>
+<td>public static DateTimeFormatter ofPattern(String pattern)</td>
+<td>使用指定的日期模板获取一个日期格式化器DateTimeFormatter对象</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo5</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//method1();</span></span><br><span class="line">        <span class="comment">//method2();</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//public static LocalDateTime parse (准备解析的字符串, 解析格式) 把一个日期字符串解析成为一个LocalDateTime对象</span></span><br><span class="line">        String s = <span class="string">&quot;2020年11月12日 13:14:15&quot;</span>;</span><br><span class="line">        DateTimeFormatter pattern = DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy年MM月dd日 HH:mm:ss&quot;</span>);</span><br><span class="line">        LocalDateTime parse = LocalDateTime.parse(s, pattern);</span><br><span class="line">        System.out.println(parse);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        LocalDateTime localDateTime = LocalDateTime.of(<span class="number">2020</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>);</span><br><span class="line">        System.out.println(localDateTime);</span><br><span class="line">        <span class="comment">//public String format (指定格式)   把一个LocalDateTime格式化成为一个字符串</span></span><br><span class="line">        DateTimeFormatter pattern = DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy年MM月dd日 HH:mm:ss&quot;</span>);</span><br><span class="line">        String s = localDateTime.format(pattern);</span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-6-LocalDateTime增加或者减少时间的方法-应用"><a href="#2-6-LocalDateTime增加或者减少时间的方法-应用" class="headerlink" title="2.6 LocalDateTime增加或者减少时间的方法 (应用)"></a>2.6 LocalDateTime增加或者减少时间的方法 (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public LocalDateTime plusYears (long years)</td>
+<td>添加或者减去年</td>
+</tr>
+<tr>
+<td>public LocalDateTime plusMonths(long months)</td>
+<td>添加或者减去月</td>
+</tr>
+<tr>
+<td>public LocalDateTime plusDays(long days)</td>
+<td>添加或者减去日</td>
+</tr>
+<tr>
+<td>public LocalDateTime plusHours(long hours)</td>
+<td>添加或者减去时</td>
+</tr>
+<tr>
+<td>public LocalDateTime plusMinutes(long minutes)</td>
+<td>添加或者减去分</td>
+</tr>
+<tr>
+<td>public LocalDateTime plusSeconds(long seconds)</td>
+<td>添加或者减去秒</td>
+</tr>
+<tr>
+<td>public LocalDateTime plusWeeks(long weeks)</td>
+<td>添加或者减去周</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * JDK8 时间类添加或者减去时间的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo6</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//public LocalDateTime plusYears (long years)   添加或者减去年</span></span><br><span class="line"></span><br><span class="line">        LocalDateTime localDateTime = LocalDateTime.of(<span class="number">2020</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>);</span><br><span class="line">        <span class="comment">//LocalDateTime newLocalDateTime = localDateTime.plusYears(1);</span></span><br><span class="line">        <span class="comment">//System.out.println(newLocalDateTime);</span></span><br><span class="line"></span><br><span class="line">        LocalDateTime newLocalDateTime = localDateTime.plusYears(-<span class="number">1</span>);</span><br><span class="line">        System.out.println(newLocalDateTime);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-7-LocalDateTime减少或者增加时间的方法-应用"><a href="#2-7-LocalDateTime减少或者增加时间的方法-应用" class="headerlink" title="2.7 LocalDateTime减少或者增加时间的方法 (应用)"></a>2.7 LocalDateTime减少或者增加时间的方法 (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public LocalDateTime  minusYears (long years)</td>
+<td>减去或者添加年</td>
+</tr>
+<tr>
+<td>public LocalDateTime  minusMonths(long months)</td>
+<td>减去或者添加月</td>
+</tr>
+<tr>
+<td>public LocalDateTime minusDays(long days)</td>
+<td>减去或者添加日</td>
+</tr>
+<tr>
+<td>public LocalDateTime minusHours(long hours)</td>
+<td>减去或者添加时</td>
+</tr>
+<tr>
+<td>public LocalDateTime minusMinutes(long minutes)</td>
+<td>减去或者添加分</td>
+</tr>
+<tr>
+<td>public LocalDateTime minusSeconds(long seconds)</td>
+<td>减去或者添加秒</td>
+</tr>
+<tr>
+<td>public LocalDateTime minusWeeks(long weeks)</td>
+<td>减去或者添加周</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * JDK8 时间类减少或者添加时间的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo7</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//public LocalDateTime minusYears (long years)  减去或者添加年</span></span><br><span class="line">        LocalDateTime localDateTime = LocalDateTime.of(<span class="number">2020</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>);</span><br><span class="line">        <span class="comment">//LocalDateTime newLocalDateTime = localDateTime.minusYears(1);</span></span><br><span class="line">        <span class="comment">//System.out.println(newLocalDateTime);</span></span><br><span class="line"></span><br><span class="line">        LocalDateTime newLocalDateTime = localDateTime.minusYears(-<span class="number">1</span>);</span><br><span class="line">        System.out.println(newLocalDateTime);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-8-LocalDateTime修改方法-应用"><a href="#2-8-LocalDateTime修改方法-应用" class="headerlink" title="2.8 LocalDateTime修改方法 (应用)"></a>2.8 LocalDateTime修改方法 (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public LocalDateTime withYear(int year)</td>
+<td>直接修改年</td>
+</tr>
+<tr>
+<td>public LocalDateTime withMonth(int month)</td>
+<td>直接修改月</td>
+</tr>
+<tr>
+<td>public LocalDateTime withDayOfMonth(int dayofmonth)</td>
+<td>直接修改日期(一个月中的第几天)</td>
+</tr>
+<tr>
+<td>public LocalDateTime withDayOfYear(int dayOfYear)</td>
+<td>直接修改日期(一年中的第几天)</td>
+</tr>
+<tr>
+<td>public LocalDateTime withHour(int hour)</td>
+<td>直接修改小时</td>
+</tr>
+<tr>
+<td>public LocalDateTime withMinute(int minute)</td>
+<td>直接修改分钟</td>
+</tr>
+<tr>
+<td>public LocalDateTime withSecond(int second)</td>
+<td>直接修改秒</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * JDK8 时间类修改时间</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo8</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//public LocalDateTime withYear(int year)   修改年</span></span><br><span class="line">        LocalDateTime localDateTime = LocalDateTime.of(<span class="number">2020</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>);</span><br><span class="line">       <span class="comment">// LocalDateTime newLocalDateTime = localDateTime.withYear(2048);</span></span><br><span class="line">       <span class="comment">// System.out.println(newLocalDateTime);</span></span><br><span class="line"></span><br><span class="line">        LocalDateTime newLocalDateTime = localDateTime.withMonth(<span class="number">20</span>);</span><br><span class="line">        System.out.println(newLocalDateTime);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-9-Period-应用"><a href="#2-9-Period-应用" class="headerlink" title="2.9 Period (应用)"></a>2.9 Period (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public static Period between(开始时间,结束时间)</td>
+<td>计算两个“时间”的间隔</td>
+</tr>
+<tr>
+<td>public int getYears()</td>
+<td>获得这段时间的年数</td>
+</tr>
+<tr>
+<td>public int getMonths()</td>
+<td>获得此期间的总月数</td>
+</tr>
+<tr>
+<td>public int getDays()</td>
+<td>获得此期间的天数</td>
+</tr>
+<tr>
+<td>public long toTotalMonths()</td>
+<td>获取此期间的总月数</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  计算两个时间的间隔</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo9</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//public static Period between(开始时间,结束时间)  计算两个&quot;时间&quot;的间隔</span></span><br><span class="line"></span><br><span class="line">        LocalDate localDate1 = LocalDate.of(<span class="number">2020</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">        LocalDate localDate2 = LocalDate.of(<span class="number">2048</span>, <span class="number">12</span>, <span class="number">12</span>);</span><br><span class="line">        Period period = Period.between(localDate1, localDate2);</span><br><span class="line">        System.out.println(period);<span class="comment">//P28Y11M11D</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//public int getYears()         获得这段时间的年数</span></span><br><span class="line">        System.out.println(period.getYears());<span class="comment">//28</span></span><br><span class="line">        <span class="comment">//public int getMonths()        获得此期间的月数</span></span><br><span class="line">        System.out.println(period.getMonths());<span class="comment">//11</span></span><br><span class="line">        <span class="comment">//public int getDays()          获得此期间的天数</span></span><br><span class="line">        System.out.println(period.getDays());<span class="comment">//11</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//public long toTotalMonths()   获取此期间的总月数</span></span><br><span class="line">        System.out.println(period.toTotalMonths());<span class="comment">//347</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-10-Duration-应用"><a href="#2-10-Duration-应用" class="headerlink" title="2.10 Duration (应用)"></a>2.10 Duration (应用)</h3><ul>
+<li><p>方法说明</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public static Durationbetween(开始时间,结束时间)</td>
+<td>计算两个“时间”的间隔</td>
+</tr>
+<tr>
+<td>public long toSeconds()</td>
+<td>获得此时间间隔的秒</td>
+</tr>
+<tr>
+<td>public int toMillis()</td>
+<td>获得此时间间隔的毫秒</td>
+</tr>
+<tr>
+<td>public int toNanos()</td>
+<td>获得此时间间隔的纳秒</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  计算两个时间的间隔</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8DateDemo10</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//public static Duration between(开始时间,结束时间)  计算两个“时间&quot;的间隔</span></span><br><span class="line"></span><br><span class="line">        LocalDateTime localDateTime1 = LocalDateTime.of(<span class="number">2020</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>);</span><br><span class="line">        LocalDateTime localDateTime2 = LocalDateTime.of(<span class="number">2020</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>);</span><br><span class="line">        Duration duration = Duration.between(localDateTime1, localDateTime2);</span><br><span class="line">        System.out.println(duration);<span class="comment">//PT21H57M58S</span></span><br><span class="line">        <span class="comment">//public long toSeconds()	       获得此时间间隔的秒</span></span><br><span class="line">        System.out.println(duration.toSeconds());<span class="comment">//79078</span></span><br><span class="line">        <span class="comment">//public int toMillis()	           获得此时间间隔的毫秒</span></span><br><span class="line">        System.out.println(duration.toMillis());<span class="comment">//79078000</span></span><br><span class="line">        <span class="comment">//public int toNanos()             获得此时间间隔的纳秒</span></span><br><span class="line">        System.out.println(duration.toNanos());<span class="comment">//79078000000000</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-异常"><a href="#3-异常" class="headerlink" title="3.异常"></a>3.异常</h2><h3 id="3-1-异常（记忆）"><a href="#3-1-异常（记忆）" class="headerlink" title="3.1 异常（记忆）"></a>3.1 异常（记忆）</h3><ul>
+<li><p>异常的概述</p>
+<p>​    异常就是程序出现了不正常的情况</p>
+</li>
+<li><p>异常的体系结构</p>
+<p><img src="/2021/03/29/Java/1-14%20%E5%B8%B8%E7%94%A8API%E4%B8%8E%E5%BC%82%E5%B8%B8/01_%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png" alt="01_异常体系结构"></p>
+</li>
+</ul>
+<h3 id="3-2-编译时异常和运行时异常的区别（记忆）"><a href="#3-2-编译时异常和运行时异常的区别（记忆）" class="headerlink" title="3.2 编译时异常和运行时异常的区别（记忆）"></a>3.2 编译时异常和运行时异常的区别（记忆）</h3><ul>
+<li><p>编译时异常</p>
+<ul>
+<li>都是Exception类及其子类</li>
+<li>必须显示处理，否则程序就会发生错误，无法通过编译</li>
+</ul>
+</li>
+<li><p>运行时异常</p>
+<ul>
+<li>都是RuntimeException类及其子类</li>
+<li>无需显示处理，也可以和编译时异常一样处理</li>
+</ul>
+</li>
+<li><p>图示</p>
+<p><img src="/2021/03/29/Java/1-14%20%E5%B8%B8%E7%94%A8API%E4%B8%8E%E5%BC%82%E5%B8%B8/02_%E7%BC%96%E8%AF%91%E6%97%B6%E5%BC%82%E5%B8%B8%E5%92%8C%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BC%82%E5%B8%B8.png" alt="02_编译时异常和运行时异常"></p>
+</li>
+</ul>
+<h3 id="3-3-JVM默认处理异常的方式（理解）"><a href="#3-3-JVM默认处理异常的方式（理解）" class="headerlink" title="3.3 JVM默认处理异常的方式（理解）"></a>3.3 JVM默认处理异常的方式（理解）</h3><ul>
+<li>如果程序出现了问题，我们没有做任何处理，最终JVM 会做默认的处理，处理方式有如下两个步骤：<ul>
+<li>把异常的名称，错误原因及异常出现的位置等信息输出在了控制台</li>
+<li>程序停止执行</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-4-查看异常信息-理解"><a href="#3-4-查看异常信息-理解" class="headerlink" title="3.4 查看异常信息 (理解)"></a>3.4 查看异常信息 (理解)</h3><p>控制台在打印异常信息时,会打印异常类名,异常出现的原因,异常出现的位置</p>
+<p>我们调bug时,可以根据提示,找到异常出现的位置,分析原因,修改异常代码</p>
+<p><img src="/2021/03/29/Java/1-14%20%E5%B8%B8%E7%94%A8API%E4%B8%8E%E5%BC%82%E5%B8%B8/03_%E6%9F%A5%E7%9C%8B%E5%BC%82%E5%B8%B8%E4%BF%A1%E6%81%AF.png" alt="03_查看异常信息"></p>
+<h3 id="3-5-throws方式处理异常（应用）"><a href="#3-5-throws方式处理异常（应用）" class="headerlink" title="3.5 throws方式处理异常（应用）"></a>3.5 throws方式处理异常（应用）</h3><ul>
+<li><p>定义格式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> 方法() <span class="keyword">throws</span> 异常类名 &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExceptionDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ParseException</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;开始&quot;</span>);</span><br><span class="line"><span class="comment">//        method();</span></span><br><span class="line">          method2();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//编译时异常</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> <span class="keyword">throws</span> ParseException </span>&#123;</span><br><span class="line">        String s = <span class="string">&quot;2048-08-09&quot;</span>;</span><br><span class="line">        SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd&quot;</span>);</span><br><span class="line">        Date d = sdf.parse(s);</span><br><span class="line">        System.out.println(d);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//运行时异常</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> <span class="keyword">throws</span> ArrayIndexOutOfBoundsException </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">        System.out.println(arr[<span class="number">3</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>注意事项</p>
+<ul>
+<li>这个throws格式是跟在方法的括号后面的</li>
+<li>编译时异常必须要进行处理，两种处理方案：try…catch …或者 throws，如果采用 throws 这种方案，在方法上进行显示声明,将来谁调用这个方法谁处理</li>
+<li>运行时异常因为在运行时才会发生,所以在方法后面可以不写,运行时出现异常默认交给jvm处理</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-6-throw抛出异常-应用"><a href="#3-6-throw抛出异常-应用" class="headerlink" title="3.6 throw抛出异常 (应用)"></a>3.6 throw抛出异常 (应用)</h3><ul>
+<li><p>格式</p>
+<p>throw new 异常();</p>
+</li>
+<li><p>注意</p>
+<p>这个格式是在方法内的，表示当前代码手动抛出一个异常，下面的代码不用再执行了</p>
+</li>
+<li><p>throws和throw的区别</p>
+<table>
+<thead>
+<tr>
+<th>throws</th>
+<th>throw</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用在方法声明后面，跟的是异常类名</td>
+<td>用在方法体内，跟的是异常对象名</td>
+</tr>
+<tr>
+<td>表示声明异常，调用该方法有可能会出现这样的异常</td>
+<td>表示手动抛出异常对象，由方法体内的语句处理</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExceptionDemo8</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//int [] arr = &#123;1,2,3,4,5&#125;;</span></span><br><span class="line">        <span class="keyword">int</span> [] arr = <span class="keyword">null</span>;</span><br><span class="line">        printArr(arr);<span class="comment">//就会 接收到一个异常.</span></span><br><span class="line">                        <span class="comment">//我们还需要自己处理一下异常.</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printArr</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(arr == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">//调用者知道成功打印了吗?</span></span><br><span class="line">            <span class="comment">//System.out.println(&quot;参数不能为null&quot;);</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(); <span class="comment">//当参数为null的时候</span></span><br><span class="line">                                            <span class="comment">//手动创建了一个异常对象,抛给了调用者,产生了一个异常</span></span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">                System.out.println(arr[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-7-try-catch方式处理异常（应用）"><a href="#3-7-try-catch方式处理异常（应用）" class="headerlink" title="3.7 try-catch方式处理异常（应用）"></a>3.7 try-catch方式处理异常（应用）</h3><ul>
+<li><p>定义格式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	可能出现异常的代码;</span><br><span class="line">&#125; <span class="keyword">catch</span>(异常类名 变量名) &#123;</span><br><span class="line">	异常的处理代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>执行流程</p>
+<ul>
+<li>程序从 try 里面的代码开始执行</li>
+<li>出现异常，就会跳转到对应的 catch 里面去执行</li>
+<li>执行完毕之后，程序还可以继续往下执行</li>
+</ul>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExceptionDemo01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;开始&quot;</span>);</span><br><span class="line">        method();</span><br><span class="line">        System.out.println(<span class="string">&quot;结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">int</span>[] arr = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">            System.out.println(arr[<span class="number">3</span>]);</span><br><span class="line">            System.out.println(<span class="string">&quot;这里能够访问到吗&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ArrayIndexOutOfBoundsException e) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;你访问的数组索引不存在，请回去修改为正确的索引&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>注意</p>
+<ol>
+<li><p>如果 try 中没有遇到问题，怎么执行？</p>
+<p>会把try中所有的代码全部执行完毕,不会执行catch里面的代码</p>
+</li>
+<li><p>如果 try 中遇到了问题，那么 try 下面的代码还会执行吗？</p>
+<p>那么直接跳转到对应的catch语句中,try下面的代码就不会再执行了<br>当catch里面的语句全部执行完毕,表示整个体系全部执行完全,继续执行下面的代码</p>
+</li>
+<li><p>如果出现的问题没有被捕获，那么程序如何运行？</p>
+<p>那么try…catch就相当于没有写.那么也就是自己没有处理.<br>默认交给虚拟机处理.</p>
+</li>
+<li><p>同时有可能出现多个异常怎么处理？</p>
+<p>出现多个异常,那么就写多个catch就可以了.<br>注意点:如果多个异常之间存在子父类关系.那么父类一定要写在下面</p>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="3-8-Throwable成员方法（应用）"><a href="#3-8-Throwable成员方法（应用）" class="headerlink" title="3.8 Throwable成员方法（应用）"></a>3.8 Throwable成员方法（应用）</h3><ul>
+<li><p>常用方法</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public String getMessage()</td>
+<td>返回此 throwable 的详细消息字符串</td>
+</tr>
+<tr>
+<td>public String toString()</td>
+<td>返回此可抛出的简短描述</td>
+</tr>
+<tr>
+<td>public void printStackTrace()</td>
+<td>把异常的错误信息输出在控制台</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExceptionDemo02</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;开始&quot;</span>);</span><br><span class="line">        method();</span><br><span class="line">        System.out.println(<span class="string">&quot;结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">int</span>[] arr = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">            System.out.println(arr[<span class="number">3</span>]); <span class="comment">//new ArrayIndexOutOfBoundsException();</span></span><br><span class="line">            System.out.println(<span class="string">&quot;这里能够访问到吗&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ArrayIndexOutOfBoundsException e) &#123; <span class="comment">//new ArrayIndexOutOfBoundsException();</span></span><br><span class="line"><span class="comment">//            e.printStackTrace();</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//public String getMessage():返回此 throwable 的详细消息字符串</span></span><br><span class="line"><span class="comment">//            System.out.println(e.getMessage());</span></span><br><span class="line">            <span class="comment">//Index 3 out of bounds for length 3</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//public String toString():返回此可抛出的简短描述</span></span><br><span class="line"><span class="comment">//            System.out.println(e.toString());</span></span><br><span class="line">            <span class="comment">//java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//public void printStackTrace():把异常的错误信息输出在控制台</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line"><span class="comment">//            java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3</span></span><br><span class="line"><span class="comment">//            at com.itheima_02.ExceptionDemo02.method(ExceptionDemo02.java:18)</span></span><br><span class="line"><span class="comment">//            at com.itheima_02.ExceptionDemo02.main(ExceptionDemo02.java:11)</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-9-异常的练习-应用"><a href="#3-9-异常的练习-应用" class="headerlink" title="3.9 异常的练习 (应用)"></a>3.9 异常的练习 (应用)</h3><ul>
+<li><p>需求</p>
+<p>键盘录入学生的姓名和年龄,其中年龄为18 - 25岁,超出这个范围是异常数据不能赋值.需要重新录入,一直录到正确为止</p>
+</li>
+<li><p>实现步骤</p>
+<ol>
+<li>创建学生对象</li>
+<li>键盘录入姓名和年龄，并赋值给学生对象</li>
+<li>如果是非法数据就再次录入</li>
+</ol>
+</li>
+<li><p>代码实现</p>
+<p>学生类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(age &gt;= <span class="number">18</span> &amp;&amp; age &lt;= <span class="number">25</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>.age = age;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//当年龄不合法时,产生一个异常</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;年龄超出了范围&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExceptionDemo12</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 键盘录入学生的姓名和年龄,其中年龄为 18 - 25岁,</span></span><br><span class="line">        <span class="comment">// 超出这个范围是异常数据不能赋值.需要重新录入,一直录到正确为止。</span></span><br><span class="line"></span><br><span class="line">        Student s = <span class="keyword">new</span> Student();</span><br><span class="line"></span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        System.out.println(<span class="string">&quot;请输入姓名&quot;</span>);</span><br><span class="line">        String name = sc.nextLine();</span><br><span class="line">        s.setName(name);</span><br><span class="line">       <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">           System.out.println(<span class="string">&quot;请输入年龄&quot;</span>);</span><br><span class="line">           String ageStr = sc.nextLine();</span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               <span class="keyword">int</span> age = Integer.parseInt(ageStr);</span><br><span class="line">               s.setAge(age);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</span><br><span class="line">               System.out.println(<span class="string">&quot;请输入一个整数&quot;</span>);</span><br><span class="line">               <span class="keyword">continue</span>;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (AgeOutOfBoundsException e) &#123;</span><br><span class="line">               System.out.println(e.toString());</span><br><span class="line">               System.out.println(<span class="string">&quot;请输入一个符合范围的年龄&quot;</span>);</span><br><span class="line">               <span class="keyword">continue</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="comment">/*if(age &gt;= 18 &amp;&amp; age &lt;=25)&#123;</span></span><br><span class="line"><span class="comment">               s.setAge(age);</span></span><br><span class="line"><span class="comment">               break;</span></span><br><span class="line"><span class="comment">           &#125;else&#123;</span></span><br><span class="line"><span class="comment">               System.out.println(&quot;请输入符合要求的年龄&quot;);</span></span><br><span class="line"><span class="comment">               continue;</span></span><br><span class="line"><span class="comment">           &#125;*/</span></span><br><span class="line">       &#125;</span><br><span class="line">        System.out.println(s);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-10-自定义异常（应用）"><a href="#3-10-自定义异常（应用）" class="headerlink" title="3.10 自定义异常（应用）"></a>3.10 自定义异常（应用）</h3><ul>
+<li><p>自定义异常概述</p>
+<p>当Java中提供的异常不能满足我们的需求时,我们可以自定义异常</p>
+</li>
+<li><p>实现步骤</p>
+<ol>
+<li>定义异常类</li>
+<li>写继承关系</li>
+<li>提供空参构造</li>
+<li>提供带参构造</li>
+</ol>
+</li>
+<li><p>代码实现</p>
+<p>异常类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AgeOutOfBoundsException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AgeOutOfBoundsException</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AgeOutOfBoundsException</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>学生类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(age &gt;= <span class="number">18</span> &amp;&amp; age &lt;= <span class="number">25</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>.age = age;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//如果Java中提供的异常不能满足我们的需求,我们可以使用自定义的异常</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> AgeOutOfBoundsException(<span class="string">&quot;年龄超出了范围&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExceptionDemo12</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 键盘录入学生的姓名和年龄,其中年龄为 18 - 25岁,</span></span><br><span class="line">        <span class="comment">// 超出这个范围是异常数据不能赋值.需要重新录入,一直录到正确为止。</span></span><br><span class="line"></span><br><span class="line">        Student s = <span class="keyword">new</span> Student();</span><br><span class="line"></span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        System.out.println(<span class="string">&quot;请输入姓名&quot;</span>);</span><br><span class="line">        String name = sc.nextLine();</span><br><span class="line">        s.setName(name);</span><br><span class="line">       <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">           System.out.println(<span class="string">&quot;请输入年龄&quot;</span>);</span><br><span class="line">           String ageStr = sc.nextLine();</span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               <span class="keyword">int</span> age = Integer.parseInt(ageStr);</span><br><span class="line">               s.setAge(age);</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</span><br><span class="line">               System.out.println(<span class="string">&quot;请输入一个整数&quot;</span>);</span><br><span class="line">               <span class="keyword">continue</span>;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (AgeOutOfBoundsException e) &#123;</span><br><span class="line">               System.out.println(e.toString());</span><br><span class="line">               System.out.println(<span class="string">&quot;请输入一个符合范围的年龄&quot;</span>);</span><br><span class="line">               <span class="keyword">continue</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="comment">/*if(age &gt;= 18 &amp;&amp; age &lt;=25)&#123;</span></span><br><span class="line"><span class="comment">               s.setAge(age);</span></span><br><span class="line"><span class="comment">               break;</span></span><br><span class="line"><span class="comment">           &#125;else&#123;</span></span><br><span class="line"><span class="comment">               System.out.println(&quot;请输入符合要求的年龄&quot;);</span></span><br><span class="line"><span class="comment">               continue;</span></span><br><span class="line"><span class="comment">           &#125;*/</span></span><br><span class="line">       &#125;</span><br><span class="line">        System.out.println(s);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="4-Optional"><a href="#4-Optional" class="headerlink" title="4.Optional"></a>4.Optional</h2><h3 id="4-1获取对象-应用"><a href="#4-1获取对象-应用" class="headerlink" title="4.1获取对象(应用)"></a>4.1获取对象(应用)</h3><ul>
+<li><p>Optional概述</p>
+<p>可能包含或不包含非null值的容器对象</p>
+</li>
+<li><p>方法介绍</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>static <T> Optional<T> of(T value)</T></T></td>
+<td>获取一个Optional对象，封装的是非null值的对象</td>
+</tr>
+<tr>
+<td>static <T> Optional<T> ofNullable(T value)</T></T></td>
+<td>获取一个Optional对象，Optional封装的值对象可以是null也可以不是null</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OptionalDemo1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//method1();</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//public static &lt;T&gt; Optional&lt;T&gt; ofNullable(T value)</span></span><br><span class="line">        <span class="comment">//获取一个Optional对象，Optional封装的值对象可以是null也可以不是null</span></span><br><span class="line">        <span class="comment">//Student s = new Student(&quot;zhangsan&quot;,23);</span></span><br><span class="line">        Student s = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">//ofNullable方法，封装的对象可以是null，也可以不是null。</span></span><br><span class="line">        Optional&lt;Student&gt; optional = Optional.ofNullable(s);</span><br><span class="line"></span><br><span class="line">        System.out.println(optional);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//static &lt;T&gt; Optional&lt;T&gt; of(T value)    获取一个Optional对象，封装的是非null值的对象</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Student s = new Student(&quot;zhangsan&quot;,23);</span></span><br><span class="line">        Student s = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">//Optional可以看做是一个容器，里面装了一个引用数据类型的对象。</span></span><br><span class="line">        <span class="comment">//返回值就是Optional的对象</span></span><br><span class="line">        <span class="comment">//如果使用of方法，封装的对象如果为空，那么还是会抛出空指针异常</span></span><br><span class="line">        Optional&lt;Student&gt; optional1 = Optional.of(s);</span><br><span class="line">        System.out.println(optional1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-2常用方法-应用"><a href="#4-2常用方法-应用" class="headerlink" title="4.2常用方法(应用)"></a>4.2常用方法(应用)</h3><ul>
+<li><p>方法介绍</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T get()</td>
+<td>如果存在值,返回值,否则抛出NoSuchElementException</td>
+</tr>
+<tr>
+<td>boolean isPresent()</td>
+<td>如果存在值,则返回true,否则为false</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OptionalDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//get() 如果存在值，返回值，否则抛出NoSuchElementException</span></span><br><span class="line">        <span class="comment">//public boolean isPresent()    判断Optional所封装的对象是否不为空，如果不为空返回true , 否则返回false</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Student s = new Student(&quot;zhangsan&quot;,23);</span></span><br><span class="line">        Student s = <span class="keyword">null</span>;</span><br><span class="line">        Optional&lt;Student&gt; optional = Optional.ofNullable(s);</span><br><span class="line">        <span class="comment">//如果封装的是一个null，那么通过get方法再次获取会抛出NoSuchElementException。</span></span><br><span class="line">        <span class="keyword">if</span>(optional.isPresent())&#123;</span><br><span class="line">            Student student = optional.get();</span><br><span class="line">            System.out.println(student);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Optional封装的对象为空&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-3处理空指针的方法-应用"><a href="#4-3处理空指针的方法-应用" class="headerlink" title="4.3处理空指针的方法(应用)"></a>4.3处理空指针的方法(应用)</h3><ul>
+<li><p>方法介绍</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T orElse(T other)</td>
+<td>如果不为空,则返回具体的值,否则返回参数中的值</td>
+</tr>
+<tr>
+<td>T orElseGet(Supplier&lt;? extends T&gt; supplier)</td>
+<td>如果不为空,则返回具体的值,否则返回由括号中函数产生的结果</td>
+</tr>
+<tr>
+<td>void ifPresent (Consumer&lt;? super T&gt; action)</td>
+<td>如果不为空,则使用该值执行给定的操作,否则不执行任何操作</td>
+</tr>
+<tr>
+<td>void ifPresentOrElse(Consumer&lt;? super T&gt; action, Runnable emptyAction)</td>
+<td>如果不为空,则使用该值执行给定的操作,否则执行给定的基于空的操作</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OptionalDemo3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//method1();</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//method2();</span></span><br><span class="line">        <span class="comment">//method3();</span></span><br><span class="line">        <span class="comment">//method4();</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method4</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//Student s = new Student(&quot;zhangsan&quot;,23);</span></span><br><span class="line">        Student s = <span class="keyword">null</span>;</span><br><span class="line">        Optional&lt;Student&gt; optional = Optional.ofNullable(s);</span><br><span class="line">        <span class="comment">//public void ifPresentOrElse(Consumer&lt;? super T&gt; action, Runnable emptyAction)、</span></span><br><span class="line">        <span class="comment">//如果不为空，则使用该值执行给定的操作，否则执行给定的基于空的操作。</span></span><br><span class="line">        optional.ifPresentOrElse(student -&gt; System.out.println(student),</span><br><span class="line">                ()-&gt;System.out.println(<span class="string">&quot;为空了&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//Student s = new Student(&quot;zhangsan&quot;,23);</span></span><br><span class="line">        Student s = <span class="keyword">null</span>;</span><br><span class="line">        Optional&lt;Student&gt; optional = Optional.ofNullable(s);</span><br><span class="line">        <span class="comment">//ifPresent (Consumer&lt;? super T&gt; action)</span></span><br><span class="line">        <span class="comment">//如果不为空，则使用该值执行给定的操作，否则不执行任何操作</span></span><br><span class="line">        optional.ifPresent(student -&gt; System.out.println(student));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Student s = <span class="keyword">new</span> Student(<span class="string">&quot;zhangsan&quot;</span>,<span class="number">23</span>);</span><br><span class="line">        <span class="comment">//Student s = null;</span></span><br><span class="line">        Optional&lt;Student&gt; optional = Optional.ofNullable(s);</span><br><span class="line">        <span class="comment">//orElseGet(Supplier&lt;? extends T&gt; supplier)</span></span><br><span class="line">        <span class="comment">//如果不为空，则返回具体的值，否则返回由括号中函数产生的结果</span></span><br><span class="line"></span><br><span class="line">        Student student = optional.orElseGet(()-&gt; <span class="keyword">new</span> Student(<span class="string">&quot;lisi&quot;</span> , <span class="number">24</span>));</span><br><span class="line">        System.out.println(student);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//Student s = new Student(&quot;zhangsan&quot;,23);</span></span><br><span class="line">        Student s = <span class="keyword">null</span>;</span><br><span class="line">        Optional&lt;Student&gt; optional = Optional.ofNullable(s);</span><br><span class="line">        <span class="comment">//orElse(T other) 如果不为空，则返回具体的值，否则返回参数中的值</span></span><br><span class="line">        Student student = optional.orElse(<span class="keyword">new</span> Student(<span class="string">&quot;lisi&quot;</span>, <span class="number">24</span>));</span><br><span class="line">        System.out.println(student);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Java/"># Java</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/03/29/Java/1-13%20%E5%B8%B8%E7%94%A8API/">1-13 常用API</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Lancer Penn | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
