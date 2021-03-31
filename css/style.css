@@ -1264,49 +1264,69 @@ header label {
   }
 }
 .highlight {
-  background: #1b1918;
-  color: #a8a19f;
+  color: #000;
+  background: #fff;
 }
 .highlight .code .comment,
 .highlight .code .quote {
-  color: #9c9491;
-}
-.highlight .code .variable,
-.highlight .code .template-variable,
-.highlight .code .attribute,
-.highlight .code .tag,
-.highlight .code .name,
-.highlight .code .regexp,
-.highlight .code .link,
-.highlight .code .selector-id,
-.highlight .code .selector-class {
-  color: #f22c40;
-}
-.highlight .code .number,
-.highlight .code .meta,
-.highlight .code .built_in,
-.highlight .code .builtin-name,
-.highlight .code .literal,
-.highlight .code .type,
-.highlight .code .params {
-  color: #df5320;
-}
-.highlight .code .string,
-.highlight .code .symbol,
-.highlight .code .bullet {
-  color: #7b9726;
-}
-.highlight .code .title,
-.highlight .code .section {
-  color: #407ee7;
+  color: #800;
 }
 .highlight .code .keyword,
-.highlight .code .selector-tag {
-  color: #6666ea;
+.highlight .code .selector-tag,
+.highlight .code .section,
+.highlight .code .title,
+.highlight .code .name {
+  color: #008;
+}
+.highlight .code .variable,
+.highlight .code .template-variable {
+  color: #660;
+}
+.highlight .code .string,
+.highlight .code .selector-attr,
+.highlight .code .selector-pseudo,
+.highlight .code .regexp {
+  color: #080;
+}
+.highlight .code .literal,
+.highlight .code .symbol,
+.highlight .code .bullet,
+.highlight .code .meta,
+.highlight .code .number,
+.highlight .code .link {
+  color: #066;
+}
+.highlight .code .title,
+.highlight .code .doctag,
+.highlight .code .type,
+.highlight .code .attr,
+.highlight .code .built_in,
+.highlight .code .builtin-name,
+.highlight .code .params {
+  color: #606;
+}
+.highlight .code .attribute,
+.highlight .code .subst {
+  color: #000;
+}
+.highlight .code .formula {
+  background-color: #eee;
+  font-style: italic;
+}
+.highlight .code .selector-id,
+.highlight .code .selector-class {
+  color: #9b703f;
+}
+.highlight .code .addition {
+  background-color: #baeeba;
+}
+.highlight .code .deletion {
+  background-color: #ffc8bd;
+}
+.highlight .code .doctag,
+.highlight .code .strong {
+  font-weight: bold;
 }
 .highlight .code .emphasis {
   font-style: italic;
-}
-.highlight .code .strong {
-  font-weight: bold;
 }
