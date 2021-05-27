@@ -186,6 +186,13 @@
                         </span>
                     
                     
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/JavaSE/">JavaSE</a>
+                            
+                        </span>
+                    
                 </div>
             
         </header>
@@ -558,10 +565,10 @@
 <li><p>三次握手和四次挥手</p>
 <ul>
 <li><p>三次握手</p>
-<p><img src="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/07_TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png" alt="07_TCP三次握手"></p>
+<p><img src="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/07_TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png" alt="07_TCP三次握手"></p>
 </li>
 <li><p>四次挥手</p>
-<p><img src="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/08_TCP%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png" alt="08_TCP四次挥手"></p>
+<p><img src="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/08_TCP%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png" alt="08_TCP四次挥手"></p>
 </li>
 </ul>
 </li>
@@ -701,7 +708,7 @@
 </li>
 <li><p>选择器</p>
 <p>监视通道状态</p>
-<p><img src="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/09_%E4%B8%89%E5%A4%A7%E6%A8%A1%E5%9D%97.png" alt="09_三大模块"></p>
+<p><img src="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/09_%E4%B8%89%E5%A4%A7%E6%A8%A1%E5%9D%97.png" alt="09_三大模块"></p>
 </li>
 </ul>
 <h3 id="4-4NIO创建缓冲区对象【应用】"><a href="#4-4NIO创建缓冲区对象【应用】" class="headerlink" title="4.4NIO创建缓冲区对象【应用】"></a>4.4NIO创建缓冲区对象【应用】</h3><ul>
@@ -728,7 +735,7 @@
 </ul>
 <h3 id="4-5NIO缓冲区添加数据【应用】"><a href="#4-5NIO缓冲区添加数据【应用】" class="headerlink" title="4.5NIO缓冲区添加数据【应用】"></a>4.5NIO缓冲区添加数据【应用】</h3><ul>
 <li><p>方法介绍</p>
-<p><img src="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/10_NIO%E7%BC%93%E5%86%B2%E5%8C%BA%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png" alt="10_NIO缓冲区添加数据"></p>
+<p><img src="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/10_NIO%E7%BC%93%E5%86%B2%E5%8C%BA%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png" alt="10_NIO缓冲区添加数据"></p>
 </li>
 <li><p>代码示例</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ByteBufferDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        int position()		  当前要操作的索引</span></span><br><span class="line"><span class="comment">//        int limit() 		  最多能操作到哪个索引</span></span><br><span class="line"><span class="comment">//        int capacity()		  缓冲区的总长度</span></span><br><span class="line">        ByteBuffer byteBuffer = ByteBuffer.allocate(<span class="number">10</span>);</span><br><span class="line">        System.out.println(byteBuffer.position());<span class="comment">//0</span></span><br><span class="line">        System.out.println(byteBuffer.limit());<span class="comment">//10</span></span><br><span class="line">        System.out.println(byteBuffer.capacity());<span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        put(byte b)		  一次添加一个字节</span></span><br><span class="line"><span class="comment">//        byteBuffer.put((byte) 97);</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.position());</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.limit());</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.capacity());</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        put(byte[] src)		 一次添加一个字节数组</span></span><br><span class="line"><span class="comment">//        byteBuffer.put(&quot;aaa&quot;.getBytes());</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.position());//3</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.limit());//10</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.capacity());//10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        position(int newPosition) 修改position</span></span><br><span class="line"><span class="comment">//        byteBuffer.position(1);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        limit(int newLimit)	  修改limit</span></span><br><span class="line"><span class="comment">//        byteBuffer.limit(5);</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.position());</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.limit());</span></span><br><span class="line"><span class="comment">//        System.out.println(byteBuffer.capacity());</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//        int remaining()		  还有多少能操作</span></span><br><span class="line"><span class="comment">//        boolean hasRemaining()	  是否还有能操作的</span></span><br><span class="line"></span><br><span class="line">        byteBuffer.put(<span class="string">&quot;0123456789&quot;</span>.getBytes());</span><br><span class="line">        System.out.println(byteBuffer.remaining());</span><br><span class="line">        System.out.println(byteBuffer.hasRemaining());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
@@ -799,6 +806,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/Java/"># Java</a>
+                    
+                        
                 </span>
             </div>
             <div>
@@ -809,10 +820,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/">1-21 类加载器</a>
+                <a class="prev" rel="prev" href="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/">1-20 网络编程入门</a>
             
             
-            <a class="next" rel="next" href="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">1-20 网络编程入门</a>
+            <a class="next" rel="next" href="/2021/04/25/Java/1-19%20%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">1-19 多线程（二）</a>
             
         </section>
 
