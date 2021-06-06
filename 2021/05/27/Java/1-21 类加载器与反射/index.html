@@ -12,7 +12,7 @@
 
 
 
-<title>1-21 类加载器 | Lancer&#39;s Blog</title>
+<title>1-21 类加载器与反射 | Lancer&#39;s Blog</title>
 
 
 
@@ -173,7 +173,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">1-21 类加载器</h1>
+            <h1 class="post-title">1-21 类加载器与反射</h1>
             
                 <div class="post-meta">
                     
@@ -186,6 +186,13 @@
                         </span>
                     
                     
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/JavaSE/">JavaSE</a>
+                            
+                        </span>
+                    
                 </div>
             
         </header>
@@ -194,7 +201,7 @@
             <h2 id="1-类加载器"><a href="#1-类加载器" class="headerlink" title="1.类加载器"></a>1.类加载器</h2><h3 id="1-1类加载器【理解】"><a href="#1-1类加载器【理解】" class="headerlink" title="1.1类加载器【理解】"></a>1.1类加载器【理解】</h3><ul>
 <li><p>作用</p>
 <p>负责将.class文件（存储的物理文件）加载在到内存中</p>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/01_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8.png" alt="01_类加载器"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/01_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8.png" alt="01_类加载器"></p>
 </li>
 </ul>
 <h3 id="1-2类加载的过程【理解】"><a href="#1-2类加载的过程【理解】" class="headerlink" title="1.2类加载的过程【理解】"></a>1.2类加载的过程【理解】</h3><ul>
@@ -216,7 +223,7 @@
 <li>在这个类加载到内存中</li>
 <li>加载完毕创建一个class对象</li>
 </ul>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/02_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E5%8A%A0%E8%BD%BD.png" alt="02_类加载过程加载"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/02_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E5%8A%A0%E8%BD%BD.png" alt="02_类加载过程加载"></p>
 </li>
 <li><p>链接</p>
 <ul>
@@ -225,26 +232,26 @@
 <p>(文件中的信息是否符合虚拟机规范有没有安全隐患)</p>
 </li>
 </ul>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/03_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E9%AA%8C%E8%AF%81.png" alt="03_类加载过程验证"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/03_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E9%AA%8C%E8%AF%81.png" alt="03_类加载过程验证"></p>
 <ul>
 <li><p>准备</p>
 <p>负责为类的类变量（被static修饰的变量）分配内存，并设置默认初始化值</p>
 <p>(初始化静态变量)</p>
 </li>
 </ul>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/04_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E5%87%86%E5%A4%87.png" alt="04_类加载过程准备"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/04_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E5%87%86%E5%A4%87.png" alt="04_类加载过程准备"></p>
 <ul>
 <li><p>解析</p>
 <p>将类的二进制数据流中的符号引用替换为直接引用</p>
 <p>(本类中如果用到了其他类，此时就需要找到对应的类)</p>
 </li>
 </ul>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/05_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90.png" alt="05_类加载过程解析"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/05_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90.png" alt="05_类加载过程解析"></p>
 </li>
 <li><p>初始化</p>
 <p>根据程序员通过程序制定的主观计划去初始化类变量和其他资源</p>
 <p>(静态变量赋值以及初始化其他资源)</p>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/06_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E5%88%9D%E5%A7%8B%E5%8C%96.png" alt="06_类加载过程初始化"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/06_%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%E5%88%9D%E5%A7%8B%E5%8C%96.png" alt="06_类加载过程初始化"></p>
 </li>
 </ol>
 </li>
@@ -275,7 +282,7 @@
 <h3 id="1-4双亲委派模型【理解】"><a href="#1-4双亲委派模型【理解】" class="headerlink" title="1.4双亲委派模型【理解】"></a>1.4双亲委派模型【理解】</h3><ul>
 <li><p>介绍</p>
 <p>如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式</p>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/07_%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B.png" alt="07_双亲委派模型"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/07_%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B.png" alt="07_双亲委派模型"></p>
 </li>
 </ul>
 <h3 id="1-5ClassLoader-中的两个方法【应用】"><a href="#1-5ClassLoader-中的两个方法【应用】" class="headerlink" title="1.5ClassLoader 中的两个方法【应用】"></a>1.5ClassLoader 中的两个方法【应用】</h3><ul>
@@ -315,7 +322,7 @@
 <li><p>Class.forName(全类名)方法</p>
 </li>
 </ul>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/08_%E8%8E%B7%E5%8F%96Class%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F.png" alt="08_获取Class对象的三种方式"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/08_%E8%8E%B7%E5%8F%96Class%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F.png" alt="08_获取Class对象的三种方式"></p>
 </li>
 <li><p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">study</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;学生在学习&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectDemo1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">        <span class="comment">//1.Class类中的静态方法forName(&quot;全类名&quot;)</span></span><br><span class="line">            <span class="comment">//全类名:包名 + 类名</span></span><br><span class="line">        Class clazz = Class.forName(<span class="string">&quot;com.itheima.myreflect2.Student&quot;</span>);</span><br><span class="line">        System.out.println(clazz);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.通过class属性来获取</span></span><br><span class="line">        Class clazz2 = Student.class;</span><br><span class="line">        System.out.println(clazz2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//3.利用对象的getClass方法来获取class对象</span></span><br><span class="line">        <span class="comment">//getClass方法是定义在Object类中.</span></span><br><span class="line">        Student s = <span class="keyword">new</span> Student();</span><br><span class="line">        Class clazz3 = s.getClass();</span><br><span class="line">        System.out.println(clazz3);</span><br><span class="line"></span><br><span class="line">        System.out.println(clazz == clazz2);</span><br><span class="line">        System.out.println(clazz2 == clazz3);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
@@ -490,15 +497,15 @@ getDeclaredConstructor (Class<?>… parameterTypes)</p>
 <li><p>示例代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException </span>&#123;</span><br><span class="line"><span class="comment">//        Object invoke(Object obj, Object... args)：运行方法</span></span><br><span class="line"><span class="comment">//        参数一：用obj对象调用该方法</span></span><br><span class="line"><span class="comment">//        参数二：调用方法的传递的参数（如果没有就不写）</span></span><br><span class="line"><span class="comment">//        返回值：方法的返回值（如果没有就不写）</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//1.获取class对象</span></span><br><span class="line">        Class clazz = Class.forName(<span class="string">&quot;com.itheima.myreflect5.Student&quot;</span>);</span><br><span class="line">        <span class="comment">//2.获取里面的Method对象  function4</span></span><br><span class="line">        Method method = clazz.getMethod(<span class="string">&quot;function4&quot;</span>, String.class);</span><br><span class="line">        <span class="comment">//3.运行function4方法就可以了</span></span><br><span class="line">        <span class="comment">//3.1创建一个Student对象,当做方法的调用者</span></span><br><span class="line">        Student student = (Student) clazz.newInstance();</span><br><span class="line">        <span class="comment">//3.2运行方法</span></span><br><span class="line">        Object result = method.invoke(student, <span class="string">&quot;zhangsan&quot;</span>);</span><br><span class="line">        <span class="comment">//4.打印一下返回值</span></span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="3-http服务器改写"><a href="#3-http服务器改写" class="headerlink" title="3.http服务器改写"></a>3.http服务器改写</h2><h3 id="3-1静态资源和动态资源【理解】"><a href="#3-1静态资源和动态资源【理解】" class="headerlink" title="3.1静态资源和动态资源【理解】"></a>3.1静态资源和动态资源【理解】</h3><p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/11_%E8%AF%B7%E6%B1%82%E8%B5%84%E6%BA%90%E5%88%86%E7%B1%BB.png" alt="11_请求资源分类"></p>
+<h2 id="3-http服务器改写"><a href="#3-http服务器改写" class="headerlink" title="3.http服务器改写"></a>3.http服务器改写</h2><h3 id="3-1静态资源和动态资源【理解】"><a href="#3-1静态资源和动态资源【理解】" class="headerlink" title="3.1静态资源和动态资源【理解】"></a>3.1静态资源和动态资源【理解】</h3><p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/11_%E8%AF%B7%E6%B1%82%E8%B5%84%E6%BA%90%E5%88%86%E7%B1%BB.png" alt="11_请求资源分类"></p>
 <ul>
 <li><p>静态资源</p>
 <p>在服务器提前准备好的文件。(图片，文本)</p>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/09_%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90.png" alt="09_静态资源"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/09_%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90.png" alt="09_静态资源"></p>
 </li>
 <li><p>动态资源</p>
 <p>在图示的案例中，当用户点击了浏览器上的按钮。<br>本质上访问的就是服务端的某一个类中的某一个方法。<br>在方法中，可以写一些判断代码和逻辑代码，让响应的内容，有可能不一样了。<br>那么，服务端所对应的这个类我们常常将其称之为“动态资源”</p>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/10_%E5%8A%A8%E6%80%81%E8%B5%84%E6%BA%90.png" alt="10_动态资源"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/10_%E5%8A%A8%E6%80%81%E8%B5%84%E6%BA%90.png" alt="10_动态资源"></p>
 </li>
 </ul>
 <h3 id="3-2准备工作【理解】"><a href="#3-2准备工作【理解】" class="headerlink" title="3.2准备工作【理解】"></a>3.2准备工作【理解】</h3><ul>
@@ -561,7 +568,7 @@ getDeclaredConstructor (Class<?>… parameterTypes)</p>
 <h3 id="3-5多个动态资源【理解】"><a href="#3-5多个动态资源【理解】" class="headerlink" title="3.5多个动态资源【理解】"></a>3.5多个动态资源【理解】</h3><ul>
 <li><p>多个动态资源</p>
 <p>针对每一个业务操作，我们都会去定义一个对应的Servlet来完成。<br>就会在服务端产生很多个Servlet</p>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/12_%E5%A4%9A%E4%B8%AA%E5%8A%A8%E6%80%81%E8%B5%84%E6%BA%90.png" alt="12_多个动态资源"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/12_%E5%A4%9A%E4%B8%AA%E5%8A%A8%E6%80%81%E8%B5%84%E6%BA%90.png" alt="12_多个动态资源"></p>
 </li>
 <li><p>实现步骤</p>
 <ul>
@@ -588,7 +595,7 @@ getDeclaredConstructor (Class<?>… parameterTypes)</p>
 <li><p>在main方法的第一行，开启一条线程执行解析配置文件的代码</p>
 </li>
 <li><p>修改处理DynamicResourceProcess中的process方法</p>
-<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/13_%E5%8F%8D%E5%B0%84%E5%92%8C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BC%98%E5%8C%96.png" alt="13_反射和配置文件优化"></p>
+<p><img src="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/13_%E5%8F%8D%E5%B0%84%E5%92%8C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BC%98%E5%8C%96.png" alt="13_反射和配置文件优化"></p>
 </li>
 </ol>
 </li>
@@ -634,6 +641,10 @@ getDeclaredConstructor (Class<?>… parameterTypes)</p>
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/Java/"># Java</a>
+                    
+                        
                 </span>
             </div>
             <div>
@@ -644,10 +655,10 @@ getDeclaredConstructor (Class<?>… parameterTypes)</p>
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/06/06/Java/1-22%20%E6%9E%9A%E4%B8%BE%E4%B8%8E%E6%B3%A8%E9%87%8A/">枚举与注释</a>
+                <a class="prev" rel="prev" href="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/">1-21 类加载器</a>
             
             
-            <a class="next" rel="next" href="/2021/05/27/Java/1-21%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E4%B8%8E%E5%8F%8D%E5%B0%84/">1-21 类加载器与反射</a>
+            <a class="next" rel="next" href="/2021/05/19/Java/1-20%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">1-20 网络编程入门</a>
             
         </section>
 
